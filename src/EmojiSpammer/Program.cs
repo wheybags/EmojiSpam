@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -83,7 +84,9 @@ namespace EmojiSpammer
                 if (c == ' ')
                     charName = "space_";
 
-                send("^+\\");
+                rightClick();
+                Thread.Sleep(500);
+                send("r");
                 Thread.Sleep(500);
                 send(":" + charName + "_" + num + ":");
                 Thread.Sleep(500);
@@ -96,5 +99,18 @@ namespace EmojiSpammer
             // Console.WriteLine(s);
             SendKeys.SendWait(s);
         }
+
+        static void rightClick()
+        {
+            mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, UIntPtr.Zero);
+            Thread.Sleep(100);
+            mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, UIntPtr.Zero);
+        }
+
+        [DllImport("user32.dll")]
+        static extern void mouse_event(uint dwFlags, int dx, int dy, uint dwData, UIntPtr dwExtraInfo);
+
+        const uint MOUSEEVENTF_RIGHTDOWN = 0x0008;
+        const uint MOUSEEVENTF_RIGHTUP = 0x0010;
     }
 }
